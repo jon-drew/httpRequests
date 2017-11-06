@@ -29,6 +29,24 @@ function getHTML (options, callback) {
 
   });
 
-}
+};
 
-console.log(getHTML(currentOptions, printHTML));
+module.exports = function getHTML (options, callback) {
+    var responseString = ''
+
+  var requestOptions = options;
+
+  https.get(requestOptions, function (response) {
+
+    response.setEncoding('utf8');
+
+    response.on('data', function(data) {
+      responseString += String(data);
+    });
+
+    response.on('end', function() {
+      console.log('Response stream complete: ' + responseString);
+    });
+
+  });
+};
